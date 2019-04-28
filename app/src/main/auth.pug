@@ -1,0 +1,17 @@
+
+v-layout#auth(fill-height, align-center, justify-center)
+  v-card
+    v-card-title.primary.py-4
+      .display-1.white--text(v-if="auth.register") Create an Account
+      .display-1.white--text(v-else) Welcome back!
+    v-card-text
+      v-text-field(label="Username", :value="auth.username", autofocus)
+      v-text-field(label="Password", type="password", :value="auth.password")
+      v-text-field(v-if="auth.register"
+        label="Verify Password", type="password", :value="auth.passmatch")
+    v-card-actions.justify-end
+      v-btn(color="primary", flat, @click="auth.register = !auth.register")
+        span(v-if="auth.register") Login
+        span(v-else) Register
+      v-btn(color="primary", depressed) Submit
+  

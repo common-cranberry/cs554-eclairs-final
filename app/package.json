@@ -1,0 +1,53 @@
+{
+  "name": "app",
+  "private": true,
+  "scripts": {
+    "build": "NODE_ENV=${NODE_ENV:-development} webpack-cli --color --display-error-details",
+    "debug": "NODE_ENV=${NODE_ENV:-development} webpack-dev-server --hot --inline --color --progress --host 0.0.0.0 --port ${PORT:-5000}"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.3",
+    "@types/node": "^11.13.8",
+    "@types/webfontloader": "^1.6.29",
+    "css-loader": "^2.1.1",
+    "cssnano": "^4.1.10",
+    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-template": "^6.2.0",
+    "js-yaml-loader": "^1.0.1",
+    "mini-css-extract-plugin": "^0.6.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "pug": "^2.0.3",
+    "pug-html-loader": "^1.1.5",
+    "raw-loader": "^2.0.0",
+    "style-loader": "^0.23.1",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "terser-webpack-plugin": "^1.2.3",
+    "ts-loader": "^5.4.4",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "typescript": "^3.4.5",
+    "url-loader": "^1.1.2",
+    "vue-hot-reload-api": "^2.3.3",
+    "vue-template-compiler": "^2.6.10",
+    "vue-template-loader": "^1.0.0",
+    "webpack": "4.28.4",
+    "webpack-cli": "^3.3.1",
+    "webpack-dev-server": "^3.3.1",
+    "webpackbar": "^3.2.0",
+    "yaml": "^1.5.0"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.17",
+    "@fortawesome/free-solid-svg-icons": "^5.8.1",
+    "@fortawesome/vue-fontawesome": "^0.1.6",
+    "axios": "^0.18.0",
+    "lodash-es": "^4.17.11",
+    "tslib": "^1.9.3",
+    "vue": "^2.6.10",
+    "vue-class-component": "^7.0.2",
+    "vue-property-decorator": "^8.1.0",
+    "vue-router": "^3.0.6",
+    "vuetify": "^1.5.13",
+    "webfontloader": "^1.6.28"
+  }
+}

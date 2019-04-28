@@ -1,0 +1,191 @@
+
+@import "~vuetify/src/stylus/settings/_colors.styl";
+
+$body-font-family := "Raleway", sans-serif
+$heading-font-family := $body-font-family
+$font-size-root := 14px
+$line-height-root := 1.5
+
+$font-weights := {
+  thin: 400, light: 400,
+  regular: 700, medium: 700,
+  bold: 900, black: 900
+}
+
+$button-text-transform := initial
+$button-font-weight := $font-weights.regular
+
+$headings := {
+  h1: {
+    size: 5.8 * $font-size-root,
+    weight: $font-weights.light,
+    line-height: 2,
+    letter-spacing: 0.02em,
+    font-family: $heading-font-family
+  },
+  h2: {
+    size: 3.4 * $font-size-root,
+    weight: $font-weights.regular,
+    line-height: 2,
+    letter-spacing: 0.03em,
+    font-family: $heading-font-family
+  },
+  h3: {
+    size: 2.2 * $font-size-root,
+    weight: $font-weights.regular,
+    line-height: 1.5,
+    letter-spacing: 0.03em,
+    font-family: $heading-font-family
+  },
+  h4: {
+    size: 1.4 * $font-size-root,
+    weight: $font-weights.regular,
+    line-height: 1,
+    letter-spacing: 0.03em,
+    font-family: $heading-font-family
+  },
+  h5: {
+    size: 1.2 * $font-size-root,
+    weight: $font-weights.regular,
+    line-height: 1,
+    letter-spacing: 0.03em,
+    font-family: $heading-font-family
+  },
+  h6: {
+    size: 1 * $font-size-root,
+    weight: $font-weights.bold,
+    line-height: 1,
+    letter-spacing: 0.05em,
+    font-family: $heading-font-family
+  },
+  subheading: {
+    size: 16px,
+    weight: $font-weights.regular
+  },
+  body-2: {
+    size: 14px,
+    weight: $font-weights.bold
+  },
+  body-1: {
+    size: 14px,
+    weight: $font-weights.regular
+  },
+  caption: {
+    size: 12px,
+    weight: $font-weights.regular
+  },
+  button: {
+    size: 14px,
+    weight: $font-weights.regular
+  }
+}
+
+$shades := {
+  "black": #2d3436,
+  "white": #dfe6e9,
+  "transparent": transparent
+}
+
+$material-light := {
+  status-bar: {
+    regular: $grey.lighten-2,
+    lights-out: rgba($shades.white, .7)
+  },
+  app-bar: $grey.lighten-4,
+  background: transparent,
+  cards: $shades.white,
+  chips: {
+    background: $grey.lighten-2,
+    color: rgba($shades.black, .87)
+  },
+  dividers: rgba($shades.black, .12),
+  text: {
+    theme: $shades.white,
+    primary: rgba($shades.black, .87),
+    secondary: rgba($shades.black, .54),
+    disabled: rgba($shades.black, .38),
+    link: $blue.darken-2,
+    link-hover: $grey.darken-3
+  },
+  icons: {
+    active: rgba($shades.black, .54),
+    inactive: rgba($shades.black, .38)
+  },
+  inputs: {
+    box: rgba($shades.black, .04),
+    solo-inverted: rgba($shades.black, .16),
+    solo-inverted-focused: $grey.darken-3,
+    solo-inverted-focused-text: $shades.white
+  },
+  buttons: {
+    disabled: rgba($shades.black, .26),
+    focused: rgba($shades.black, .12),
+    focused-alt: rgba($shades.white, .6),
+    pressed: rgba(#999, .4)
+  },
+  expansion-panels: {
+    focus: $grey.lighten-3
+  },
+  list-tile: {
+    hover: rgba($shades.black, .04)
+  },
+  selection-controls: {
+    thumb: {
+      inactive: $grey.lighten-5,
+      disabled: $grey.lighten-1
+    },
+    track: {
+      inactive: rgba($shades.black, .38),
+      disabled: rgba($shades.black, .12)
+    }
+  },
+  slider: {
+    active: rgba($shades.black, .38),
+    inactive: rgba($shades.black, .26),
+    disabled: rgba($shades.black, .26),
+    discrete: $shades.black
+  },
+  tabs: {
+    active: rgba($shades.black, .87)
+  },
+  text-fields: {
+    box: rgba($shades.black, .06),
+    box-hover: rgba($shades.black, .12)
+  },
+  input-bottom-line: rgba($shades.black, .42),
+  stepper: {
+    active: rgba($shades.white, 1),
+    completed: rgba($shades.black, 0.87),
+    hover: rgba($shades.black, 0.54)
+  },
+  table: {
+    active: $grey.lighten-4
+    hover: $grey.lighten-3
+  },
+  picker: {
+    body: $shades.white,
+    clock: $grey.lighten-2,
+    indeterminateTime: $grey.lighten-1,
+    title: $grey.lighten-2
+  },
+  bg-color: $shades.white
+  fg-color: $shades.black
+  text-color: $shades.black
+  primary-text-percent: .87
+  secondary-text-percent: .54
+  disabledORhints-text-percent: .38
+  divider-percent: .12
+  active-icon-percent: .54
+  inactive-icon-percent: .38
+  calendar: {
+    background-color: #fff
+    outside-background-color: #f7f7f7
+    line-color: #e0e0e0
+    interval-color: $grey.darken-3
+    interval-line-color: $grey.lighten-2
+    text-color: #000
+    past-color: rgba(#000, .38)
+  }
+}
+
+@import "~vuetify/src/stylus/main.styl";
