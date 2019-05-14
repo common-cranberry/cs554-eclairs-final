@@ -3,17 +3,22 @@
 
 This project is managed by `pnpm`.
 
-To install (from root)
+To install `pnpm`
+---
+
+`npm install -g pnpm`
+
+To install the project (from root)
 ---
 
 `pnpm install -r`
 
-To build (from root)
+To build the project (from root)
 ---
 
 `pnpm recursive run build`
 
-To debug (from root)
+To run the project (from root)
 ---
 
 `pnpm recursive run debug`
