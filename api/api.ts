@@ -1,4 +1,3 @@
-"use strict";
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -9,8 +8,10 @@ const bcrypt = require("bcrypt");
 const saltRounds = 12;
 const bluebird = require("bluebird");
 const redis = require("redis");
+
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
+
 // jwt secret
 const jwtKey = "AAABAHng0VzwE96spWUNuk4ON4ftocYIoHwr31s4lAx1lV9TzNVl3SoU5gFiJNqd\n" +
     "bsSMzRPn+OT/rv9Wa8rsedGY4aWQAPaa1jKEBjLYGIe+Qwdq/XGTOgieWHh4OyAb\n" +
@@ -26,44 +27,47 @@ const jwtKey = "AAABAHng0VzwE96spWUNuk4ON4ftocYIoHwr31s4lAx1lV9TzNVl3SoU5gFiJNqd
     "AIAYXf6eteYBFRVpUkfFMOaHHw1g0PH9S/55bPxj7EwI4SdrnUHT/YUk6k6j7pbL\n" +
     "I/coDvYOmdDFgBK2NoI4sEQ1J1WYJl30RybVnmBeAvLs44qAW+bRpB+pfyt/Vsrp\n" +
     "4VvPc8bwwhUQIHTq24vef9AToj6m7dhIgVhDNoLNi6w1gQ==";
+
 //Run on port 3000
 const port = 3000;
 const app = express();
+
 //Need to enable cors for requests from front end
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
+
 app.get('/', (req, res) => {
     req;
-    res.send("The rest server is up and running.");
+    res.send("The rest server is up and running.")
 });
+
 app.post('/register', async (req, res) => {
     try {
-        let hashpw = await bcrypt.hash(req.body.password, saltRounds);
-        let addedUser = await db.addUser(req.body.name, req.body.email, hashpw, req.body.dob);
-        let token = jwt.sign({ id: addedUser._id, email: addedUser.email }, jwtKey);
-        res.status(200).json({ id: addedUser._id, name: addedUser.name, token });
-    }
-    catch (e) {
-        res.status(500).json({ error: e });
+        let hashpw = await bcrypt.hash(req.body.password,saltRounds);
+        let addedUser = await db.addUser(req.body.name,req.body.email,hashpw,req.body.dob);
+        let token = jwt.sign({id:addedUser._id,email:addedUser.email},jwtKey);
+        res.status(200).json({id:addedUser._id,name:addedUser.name,token});
+    } catch (e) {
+        res.status(500).json({error:e});
     }
 });
+
 app.post('/login', async (req, res) => {
     try {
-        let valid = await db.checkPw(req.body.email, req.body.pw);
+        let valid = await db.checkPw(req.body.email,req.body.pw);
         if (valid) {
             let user = await db.getUserByEmail(req.body.email);
-            let token = jwt.sign({ id: user._id, email: user.email }, jwtKey);
-            res.status(200).json({ id: user._id, name: user.name, token });
+            let token = jwt.sign({id:user._id,email:user.email},jwtKey);
+            res.status(200).json({id:user._id,name:user.name,token});
+        } else {
+            res.status(403).json({error:"Invalid Login"});
         }
-        else {
-            res.status(403).json({ error: "Invalid Login" });
-        }
-    }
-    catch (e) {
-        res.status(500).json({ error: e });
+    } catch (e) {
+        res.status(500).json({error:e});
     }
 });
+
 app.get('/entries', async (req, res) => {
     let token;
     if (req.headers.authorization) {
@@ -71,20 +75,19 @@ app.get('/entries', async (req, res) => {
     }
     let payload;
     try {
-        payload = jwt.verify(token, jwtKey);
-    }
-    catch (e) {
-        res.status(403).json({ error: "Invalid Login" });
+        payload = jwt.verify(token,jwtKey);
+    } catch (e) {
+        res.status(403).json({error:"Invalid Login"});
         return;
     }
     try {
         let posts = await db.getAllPostsById(payload.id);
-        res.status(200).json({ posts });
-    }
-    catch (e) {
-        res.status(500).json({ error: e });
+        res.status(200).json({posts});
+    } catch (e) {
+        res.status(500).json({error:e});
     }
 });
+
 app.get('/entries/:date', async (req, res) => {
     let token;
     if (req.headers.authorization) {
@@ -92,21 +95,20 @@ app.get('/entries/:date', async (req, res) => {
     }
     let payload;
     try {
-        payload = jwt.verify(token, jwtKey);
-    }
-    catch (e) {
-        res.status(403).json({ error: "Invalid Login" });
+        payload = jwt.verify(token,jwtKey);
+    } catch (e) {
+        res.status(403).json({error:"Invalid Login"});
         return;
     }
     let date = req.params.date;
     try {
-        let post = await db.getSinglePostByUserDate(payload.id, date);
+        let post = await db.getSinglePostByUserDate(payload.id,date);
         res.status(200).json(post);
-    }
-    catch (e) {
-        res.status(500).json({ error: e });
+    } catch (e) {
+        res.status(500).json({error:e});
     }
 });
+
 app.put('/entries/:date', async (req, res) => {
     let token;
     if (req.headers.authorization) {
@@ -114,21 +116,20 @@ app.put('/entries/:date', async (req, res) => {
     }
     let payload;
     try {
-        payload = jwt.verify(token, jwtKey);
-    }
-    catch (e) {
-        res.status(403).json({ error: "Invalid Login" });
+        payload = jwt.verify(token,jwtKey);
+    } catch (e) {
+        res.status(403).json({error:"Invalid Login"});
         return;
     }
     let date = req.params.date;
     try {
-        await db.updatePost(payload.id, date, req.body.content);
-        res.status(200).json({ msg: "updated" });
-    }
-    catch (e) {
-        res.status(500).json({ error: e });
+        await db.updatePost(payload.id,date,req.body.content);
+        res.status(200).json({msg:"updated"});
+    } catch (e) {
+        res.status(500).json({error:e});
     }
 });
+
 app.post('/entries/:date', async (req, res) => {
     let token;
     if (req.headers.authorization) {
@@ -136,21 +137,20 @@ app.post('/entries/:date', async (req, res) => {
     }
     let payload;
     try {
-        payload = jwt.verify(token, jwtKey);
-    }
-    catch (e) {
-        res.status(403).json({ error: "Invalid Login" });
+        payload = jwt.verify(token,jwtKey);
+    } catch (e) {
+        res.status(403).json({error:"Invalid Login"});
         return;
     }
     let date = req.params.date;
     try {
-        await db.addEntry(payload.id, date, req.body.content);
-        res.status(200).json({ msg: "posted" });
-    }
-    catch (e) {
-        res.status(500).json({ error: e });
+        await db.addEntry(payload.id,date,req.body.content);
+        res.status(200).json({msg:"posted"});
+    } catch (e) {
+        res.status(500).json({error:e});
     }
 });
+
 app.delete('/entries/:date', async (req, res) => {
     let token;
     if (req.headers.authorization) {
@@ -158,23 +158,21 @@ app.delete('/entries/:date', async (req, res) => {
     }
     let payload;
     try {
-        payload = jwt.verify(token, jwtKey);
-    }
-    catch (e) {
-        res.status(403).json({ error: "Invalid Login" });
+        payload = jwt.verify(token,jwtKey);
+    } catch (e) {
+        res.status(403).json({error:"Invalid Login"});
         return;
     }
     let date = req.params.date;
     try {
-        await db.deletePost(payload.id, date);
-        res.status(200).json({ msg: "deleted" });
-    }
-    catch (e) {
-        res.status(500).json({ error: e });
+        await db.deletePost(payload.id,date);
+        res.status(200).json({msg:"deleted"});
+    } catch (e) {
+        res.status(500).json({error:e});
     }
 });
+
 //Start server
 app.listen(port, () => {
     console.log('Rest service started');
 });
-//# sourceMappingURL=api.js.map
