@@ -12,6 +12,7 @@ import bcrypt from "bcrypt";
 import { promisifyAll } from "bluebird";
 import { RedisClient } from "redis";
 import { validate } from "jsonschema";
+import asyncHandler from "express-async-handler";
 
 import * as db from "./data";
 import { BCRYPT_ROUNDS, JWT_SECRET, PORT } from "./env";
@@ -29,9 +30,7 @@ app.get("/", function ( _: Request, res: Response ): void {
   res.status(200).json({ status: "UP" });
 });
 
-app.use("/", auth);
-
-app.post("/register", async function (
+app.post("/register", asyncHandler(async function (
   req: Request, res: Response
 ): Promise<void> {
   const { instance: {
@@ -44,14 +43,14 @@ app.post("/register", async function (
       password: { type: "string", "required": true },
       dob: { type: [ "integer", "string" ], "required": true }
     }
-  }, { throwError: true });
+  }, { throwError: true, propertyName: "registration" });
   const hash: string = await bcrypt.hash(password, BCRYPT_ROUNDS);
   const user: any = await db.addUser(name, email, hash, new Date(dob));
   const token = jwt.sign({ id: user._id, email: user.email}, JWT_SECRET);
   res.status(200).json({ user, token });
-});
+}));
 
-app.post("/login", async function (
+app.post("/login", asyncHandler(async function (
   req: Request, res: Response
 ): Promise<void> {
   const { instance: {
@@ -62,7 +61,7 @@ app.post("/login", async function (
       email: { type: "string", "required": true },
       password: { type: "string", "required": true }
     }
-  }, { throwError: true });
+  }, { throwError: true, propertyName: "login" });
   if (!await db.checkPw(email, password)) {
     res.status(403).json({ errors: [ "Invalid Login" ] });
     return;
@@ -70,7 +69,9 @@ app.post("/login", async function (
   const user = await db.getUserByEmail(email);
   const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET);
   res.status(200).json({ user, token });
-});
+}));
+
+app.use("/", auth);
 
 auth.use(function ( req: Request, res: Response, next: NextFunction ): void {
   const auth: string | undefined = req.headers.authorization;
@@ -91,48 +92,48 @@ auth.use(function ( req: Request, res: Response, next: NextFunction ): void {
   }
 })
 
-auth.get("/entries", async function (
+auth.get("/entries", asyncHandler(async function (
   req: Request, res: Response
 ): Promise<void> {
   const posts = await db.getAllPostsById(req.token.id);
   res.status(200).json({ posts });
-});
+}));
 
-auth.get("/entries/:date", async function (
+auth.get("/entries/:date", asyncHandler(async function (
   req: Request, res: Response
 ): Promise<void> {
   const post: any = await db.getSinglePostByUserDate(req.token.id, req.params.date);
   res.status(200).json(post);
-});
+}));
 
-auth.put("/entries/:date", async function (
+auth.put("/entries/:date", asyncHandler(async function (
   req: Request, res: Response
 ): Promise<void> {
   const { instance: { content } } = validate(req.body, {
     type: "object",
     properties: { content: { type: "string", "required": true } }
-  }, { throwError: true });
+  }, { throwError: true, propertyName: "entry" });
   const post: any = await db.updatePost(req.token.id, req.params.date, content);
   res.status(200).json(post);
-});
+}));
 
-auth.post("/entries/:date", async function (
+auth.post("/entries/:date", asyncHandler(async function (
   req: Request, res: Response
 ): Promise<void> {
   const { instance: { content } } = validate(req.body, {
     type: "object",
     properties: { content: { type: "string", "required": true } }
-  }, { throwError: true });
+  }, { throwError: true, propertyName: "entry" });
   const post: any = await db.addEntry(req.token.id, req.params.date, content);
   res.status(200).json(post);
-});
+}));
 
-auth.delete("/entries/:date", async function (
+auth.delete("/entries/:date", asyncHandler(async function (
   req: Request, res: Response
 ): Promise<void> {
   const success: boolean = await db.deletePost(req.token.id, req.params.date);
   res.status(200).json({ success });
-});
+}));
 
 app.use(methodOverride());
 app.use(<any> function (
@@ -145,7 +146,7 @@ app.use(<any> function (
     return next(err);
   }
   res.status(err.status || err.statusCode || 500);
-  res.json({ errors: [ err ] });
+  res.json({ errors: [ err.toString() ] });
 })
 
 //Start server

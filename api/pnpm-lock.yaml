@@ -4,6 +4,7 @@ dependencies:
   body-parser: 1.19.0
   cors: 2.8.5
   express: 4.17.0
+  express-async-handler: 1.1.4
   express-redis-cache: 1.1.3
   jsonschema: 1.2.4
   jsonwebtoken: 8.5.1
@@ -359,6 +360,10 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
+  /express-async-handler/1.1.4:
+    dev: false
+    resolution:
+      integrity: sha512-HdmbVF4V4w1q/iz++RV7bUxIeepTukWewiJGkoCKQMtvPF11MLTa7It9PRc/reysXXZSEyD4Pthchju+IUbMiQ==
   /express-redis-cache/1.1.3:
     dependencies:
       async: 2.6.2
@@ -1180,6 +1185,7 @@ specifiers:
   body-parser: ^1.19.0
   cors: ^2.8.5
   express: ^4.16.4
+  express-async-handler: ^1.1.4
   express-redis-cache: ^1.1.3
   jsonschema: ^1.2.4
   jsonwebtoken: ^8.5.1
