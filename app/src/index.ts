@@ -18,7 +18,8 @@ socket.on('newPost',function (msg:any) {
 
 Vue.use(VueRouter);
 
-const vue: Vue = new Vue({router, render ( create: CreateElement ): VNode {
+const vue: Vue = new Vue({
+  router, render ( create: CreateElement ): VNode {
     return create(Main);
   }
 } as ComponentOptions<Vue>);
