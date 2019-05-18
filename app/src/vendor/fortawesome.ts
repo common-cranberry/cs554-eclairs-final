@@ -6,7 +6,22 @@ import {
   FontAwesomeLayers,
   FontAwesomeLayersText
 } from "@fortawesome/vue-fontawesome";
+import {
+  library
+} from "@fortawesome/fontawesome-svg-core";
+import {
+  faCheckSquare
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faSquare
+} from "@fortawesome/free-regular-svg-icons";
 
-Vue.component("fa-icon", <any> FontAwesomeIcon);
-Vue.component("fa-layers", <any> FontAwesomeLayers);
-Vue.component("fa-layers-text", <any> FontAwesomeLayersText);
+for (const icon of [
+  faCheckSquare, faSquare
+]) {
+  library.add(icon as any);
+}
+
+Vue.component("font-awesome-icon", <any> FontAwesomeIcon);
+Vue.component("font-awesome-layers", <any> FontAwesomeLayers);
+Vue.component("font-awesome-layers-text", <any> FontAwesomeLayersText);

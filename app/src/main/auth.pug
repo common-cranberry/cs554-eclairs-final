@@ -2,16 +2,29 @@
 v-layout#auth(fill-height, align-center, justify-center)
   v-card
     v-card-title.primary.py-4
-      .display-1.white--text(v-if="auth.register") Create an Account
+      .display-1.white--text(v-if="$store.auth.register") Create an Account
       .display-1.white--text(v-else) Welcome back!
+    v-card-title.error.py-3(v-if="$store.auth.error")
+      .headline.white--text {{$store.auth.error}}
+    v-progress-linear.ma-0(indeterminate, v-if="$store.auth.pending")
+      
     v-card-text
-      v-text-field(label="Username", :value="auth.username", autofocus)
-      v-text-field(label="Password", type="password", :value="auth.password")
-      v-text-field(v-if="auth.register"
-        label="Verify Password", type="password", :value="auth.passmatch")
+      v-form(ref="auth", v-model="authValid", lazy-validation)
+        v-text-field(key="email", :rules="[required]",
+          label="Email", :value="$store.auth.data.email", autofocus)
+        v-text-field(key="name", v-if="$store.auth.register", 
+          :rules="[requiredForRegister]",
+          label="Name", :value="$store.auth.data.name")
+        v-text-field(key="password", :rules="[required]",
+          label="Password", type="password", :value="$store.auth.data.password")
+        v-text-field(key="passmatch", v-if="$store.auth.register",
+          :rules="[requiredForRegister]",
+          label="Verify Password", type="password", :value="$store.auth.data.passmatch")
+        v-checkbox(key="trusted", color="primary",
+          label="Trusted Device", :value="$store.auth.data.trusted")
     v-card-actions.justify-end
-      v-btn(color="primary", flat, @click="auth.register = !auth.register")
-        span(v-if="auth.register") Login
+      v-btn(color="primary", flat, @click="$store.auth.register = !$store.auth.register")
+        span(v-if="$store.auth.register") Login
         span(v-else) Register
-      v-btn(color="primary", depressed) Submit
+      v-btn(color="primary", depressed, @click="submit") Submit
   

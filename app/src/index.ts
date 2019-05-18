@@ -6,6 +6,7 @@ import VueRouter from "vue-router";
 import Main from "./main";
 import { router } from "./router";
 import "./vendor";
+import "./data/store";
 
 Vue.use(VueRouter);
 

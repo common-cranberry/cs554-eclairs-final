@@ -1,6 +1,6 @@
 
 v-app#main
   .underlay.primary.darken-4
-  v-content.main--auth__wrapper(key="main--auth", v-if="!auth.success")
+  v-content.main--auth__wrapper(key="main--auth", v-if="!$store.auth.success")
     include ./auth.pug
   v-content.main--page__wrapper(key="main--page", v-else)
