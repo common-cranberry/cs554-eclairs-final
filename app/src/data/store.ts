@@ -58,7 +58,7 @@ Vue.use({
           data ( ): Store {
             return {
               http: Axios.create({
-                baseURL: process.env.ENDPOINT || "localhost:3000"
+                baseURL: process.env.ENDPOINT || "http://localhost:3000"
               }),
               auth: {
                 register: true,
@@ -103,7 +103,7 @@ Vue.use({
               try {
                 result = await request;
               } catch ( e ) {
-                if (e.response && e.response.errors) {
+                if (e.response && e.response.data.errors) {
                   result = e.response;
                 } else {
                   this.auth.error = e.message;
