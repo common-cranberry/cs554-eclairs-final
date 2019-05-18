@@ -25,7 +25,7 @@ To run the project (from root)
 
 # Eclairs: Life Blogging Site
 
-Our website is a week-based life chronicling application that allows users to  keep track of life events in a visually appealing and simple format. The user's life of ~100 years is represented week by week per year in a timeline of weeks from the first week of the user's birth to the final week. Each week is clickable, allowing users to add or edit events that happened during the week.
+Our website is a week-based life chronicling application that allows users to  keep track of life events in a visually appealing and simple format. The user's life of ~100 years is represented week by week per year in a grid of ~5200 boxes. Each week is clickable, allowing users to add or edit events that happened during the week.
 
 The main purpose of the site is to assist in life chronicling, providing the users with a simple, yet effective visual interface for monitoring life events. It can be used for self-improvement, tracking progress, such as towards a degree or losing weight, or sharing important life events with others.
 
@@ -42,13 +42,9 @@ By:
 
 ## Changes from initial proposal
 
-Originally, the site was designed around a grid system to chronical life events.
+Originally, socket.io was designed to send push notifications to users who have life events on the same week. 
 
-In testing, we found that the grid was not easy to use as an interface. Though it performed well for data abstraction purposes (giving a concise overview of the user's life), it was not easy to interact with when adding or editing life events.
-
-Instead, we went with a timeline design that we found easier to use.
-
-Additionally, socket.io was designed to send push notifications to users who have life events on the same week. Instead, these push notifications are visible to everyone on the site.
+Instead, these push notifications are visible to everyone on the site.
 
 ## Implementation
 
