@@ -13,7 +13,7 @@ export type AuthResponse =
 
 export type AuthData = {
   name: string;
-  dob: null | Date;
+  dob: string;
   email: string;
   password: string;
   passmatch: string;
@@ -67,7 +67,7 @@ Vue.use({
                 error: null,
                 data: {
                   name: "",
-                  dob: null,
+                  dob: new Date().toISOString(),
                   email: "",
                   password: "",
                   passmatch: "",

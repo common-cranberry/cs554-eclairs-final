@@ -10,14 +10,16 @@ import {
   library
 } from "@fortawesome/fontawesome-svg-core";
 import {
-  faCheckSquare
+  faCheckSquare,
+  faChevronLeft,
+  faChevronRight
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faSquare
 } from "@fortawesome/free-regular-svg-icons";
 
 for (const icon of [
-  faCheckSquare, faSquare
+  faCheckSquare, faChevronLeft, faChevronRight, faSquare
 ]) {
   library.add(icon as any);
 }
