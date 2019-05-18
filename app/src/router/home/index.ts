@@ -7,12 +7,17 @@ import "./index.styl";
 @Template
 @Component
 export default class Home extends Vue {
-  public entry: string = "";
 
   public grid: Array<Array<any>> = null as any;
 
   public active: boolean = false;
   public activeData: null | [ number, number ] = null;
+  public content: null | string = null;
+
+  public get activeItem ( ): any {
+    return !this.activeData ? null :
+      this.grid[this.activeData[0]][this.activeData[1]];
+  }
 
   public created ( ): void {
     const grid: Array<Array<any>> = new Array(this.years);
@@ -29,7 +34,7 @@ export default class Home extends Vue {
     }
     this.$set(this, "grid", grid);
     this.$store.http.get("/entries").then(( { data }: any ): void => {
-      for (const entry of data) {
+      for (const entry of data.posts) {
         const m = entry.date.match(/(\d+)-(\d+)/);
         Object.assign(this.grid[Number(m[1])][Number(m[2])], entry);
       }
@@ -49,11 +54,12 @@ export default class Home extends Vue {
     return Math.floor(new Date().getDate() / 7);
   }
 
-  public createEntry ( year: number, week: number ): void {
-    this.$store.http.post(`/entries/${year}-${week}`, {
-      content: this.entry
-    }).then(( ): void => {
-      this.entry = "";
-    })
+  public createEntry ( ): void {
+    const item: any = this.activeItem;
+    this.$store.http[
+      this.content ? "put" : "post"
+    ](`/entries/${item.year}-${item.week}`, {
+      content: item.content
+    });
   }
 }

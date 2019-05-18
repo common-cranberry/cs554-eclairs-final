@@ -12,18 +12,18 @@ v-layout#home__page(fill-height, align-center, justify-center)
         v-flex(shrink,v-for="year, yearN in grid")
           v-layout(row, nowrap)
             v-flex(v-for="week, weekN in year")
-              .week(@click="activeData = [ yearN, weekN ]; active=true")
-                .d-block.pa-1(:class="grid[activeData[0]][activeData[1]].content !== null ? 'primary' : 'grey'")
+              .week(@click="activeData = [ yearN, weekN ]; content = activeItem.content; active=true")
+                .d-block.pa-1(:class="grid[yearN][weekN].content !== null ? 'primary' : 'grey'")
       v-dialog(lazy, v-model="active")
-        v-card(v-if="active")
+        v-card(v-if="activeData")
           v-card-title.primary.white--text
             span.headline Week {{activeData[0] * 52 + activeData[1] + 1}}
             span.ml-2.subheading (Year {{activeData[0] + 1}} Week {{activeData[1] + 1}})
           v-card-text
             v-textarea(placeholder="No entry",
-              solo, flat, auto-grow, v-model="grid[activeData[0]][activeData[1]].content")
+              solo, flat, auto-grow, v-model="activeItem.content")
           v-card-actions
             v-spacer
             v-btn(color="primary", flat, @click="active = false") Cancel
-            v-btn(color="primary", depressed) Save
+            v-btn(color="primary", depressed, @click="createEntry(activeData[0], activeData[1])") Save
                     
