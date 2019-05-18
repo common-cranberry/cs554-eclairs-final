@@ -7,11 +7,18 @@ import Main from "./main";
 import { router } from "./router";
 import "./vendor";
 import "./data/store";
+import io from 'socket.io-client';
+
+// @ts-ignore
+const socket = io('http://localhost',{origins: "*:*"});
+socket.on('newPost',function (msg:any) {
+  let date = msg.date;
+  console.log("A user just made a post for" + date);
+});
 
 Vue.use(VueRouter);
 
-const vue: Vue = new Vue({
-  router, render ( create: CreateElement ): VNode {
+const vue: Vue = new Vue({router, render ( create: CreateElement ): VNode {
     return create(Main);
   }
 } as ComponentOptions<Vue>);

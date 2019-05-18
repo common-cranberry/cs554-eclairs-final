@@ -13,7 +13,7 @@ import { promisifyAll } from "bluebird";
 import { RedisClient } from "redis";
 import { validate } from "jsonschema";
 import asyncHandler from "express-async-handler";
-import httpIn from "http";
+// import httpIn from "http";
 import socketIO from "socket.io";
 
 import * as db from "./data";
@@ -24,12 +24,12 @@ promisifyAll(RedisClient.prototype);
 
 const app: Express = express();
 const auth: Router = Router();
-const http = new httpIn.Server(app);
-const io = socketIO(http);
+// const http = new httpIn.Server(app);
 
 app.use(cors({ maxAge: 600 }));
 app.use(json());
 app.use(urlencoded({ extended: false }));
+const io = socketIO.listen(app.listen(PORT));
 
 io.on("connection", (socket) => {
   // connection
