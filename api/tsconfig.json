@@ -25,6 +25,7 @@
     "declaration": false,
     "sourceMap": true,
     "rootDir": ".",
+    "outDir": "./dist",
     "composite": false,
     "skipLibCheck": true,
     "removeComments": false,
