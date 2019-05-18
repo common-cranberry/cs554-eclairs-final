@@ -1,18 +1,30 @@
 
 v-layout#home__page(fill-height, align-center, justify-center)
-  - var rows = 0;
-  - var cols = 0;
-  table.table
-    while rows < 100
-      tr
-        while cols < 52
-          td
-            div(
-              id=rows*52+cols
-              class='box'
-              style={background: 'green', width: '20px', height: '20px'}
-            )
-          - cols++
-      - cols = 0
-      - rows++
-      
+  v-card
+    v-card-title.primary.white--text
+      .display-1 Weeks in the life of {{$store.auth.data.name}}.
+    v-card-text
+      v-layout(column, nowrap)
+        v-flex(shrink)
+          v-layout(row, nowrap)
+            v-flex(v-for="j, week in new Array(52)")
+              .d-block(v-if="!(week % 5)") {{week + 1}}
+        v-flex(shrink,v-for="year, yearN in grid")
+          v-layout(row, nowrap)
+            v-flex(v-for="week, weekN in year")
+              v-dialog(lazy, v-model="week.active")
+                template(v-slot:activator="{on}")
+                  .week(v-on="on")
+                    .d-block.pa-1.grey
+                v-card
+                  v-card-title.primary.white--text
+                    span.headline Week {{yearN * 52 + weekN + 1}}
+                    span.ml-2.subheading (Year {{yearN + 1}} Week {{weekN + 1}})
+                  v-card-text
+                    v-textarea(placeholder="No entry",
+                      solo, flat, auto-grow)
+                  v-card-actions
+                    v-spacer
+                    v-btn(color="primary", flat, @click="week.active = false") Cancel
+                    v-btn(color="primary", depressed) Save
+                    
