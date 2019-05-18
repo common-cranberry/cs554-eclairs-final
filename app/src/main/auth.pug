@@ -16,6 +16,7 @@ v-layout#auth(fill-height, align-center, justify-center)
           :rules="[requiredForRegister]",
           label="Name", v-model="$store.auth.data.name")
         v-text-field(key="password", :rules="[required]",
+          @keydown.enter="submit",
           label="Password", type="password", v-model="$store.auth.data.password")
         v-text-field(key="passmatch", v-if="$store.auth.register",
           :rules="[requiredForRegister, passmatch]",
