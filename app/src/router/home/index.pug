@@ -1,3 +1,18 @@
 
-#home__page
-  p {{message}}
+v-layout#home__page(fill-height, align-center, justify-center)
+  - var rows = 0;
+  - var cols = 0;
+  table.table
+    while rows < 100
+      tr
+        while cols < 52
+          td
+            div(
+              id=rows*52+cols
+              class='box'
+              style={background: 'green', width: '20px', height: '20px'}
+            )
+          - cols++
+      - cols = 0
+      - rows++
+      

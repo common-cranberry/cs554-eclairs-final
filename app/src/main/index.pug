@@ -4,3 +4,4 @@ v-app#main
   v-content.main--auth__wrapper(key="main--auth", v-if="!$store.auth.success")
     include ./auth.pug
   v-content.main--page__wrapper(key="main--page", v-else)
+    router-view
