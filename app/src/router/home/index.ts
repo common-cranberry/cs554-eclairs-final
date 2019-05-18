@@ -54,12 +54,18 @@ export default class Home extends Vue {
     return Math.floor(new Date().getDate() / 7);
   }
 
-  public createEntry ( ): void {
+  public save ( ): void {
     const item: any = this.activeItem;
     this.$store.http[
       this.content ? "put" : "post"
     ](`/entries/${item.year}-${item.week}`, {
       content: item.content
     });
+    this.active = false;
+  }
+
+  public cancel ( ): void {
+    this.activeItem.content = this.content;
+    this.active = false;
   }
 }

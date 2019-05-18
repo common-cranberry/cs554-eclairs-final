@@ -24,6 +24,6 @@ v-layout#home__page(fill-height, align-center, justify-center)
               solo, flat, auto-grow, v-model="activeItem.content")
           v-card-actions
             v-spacer
-            v-btn(color="primary", flat, @click="active = false") Cancel
-            v-btn(color="primary", depressed, @click="createEntry(activeData[0], activeData[1])") Save
+            v-btn(color="primary", flat, @click="cancel()") Cancel
+            v-btn(color="primary", depressed, @click="save()") Save
                     
