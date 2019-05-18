@@ -13,6 +13,8 @@ import { promisifyAll } from "bluebird";
 import { RedisClient } from "redis";
 import { validate } from "jsonschema";
 import asyncHandler from "express-async-handler";
+import httpIn from "http";
+import socketIO from "socket.io";
 
 import * as db from "./data";
 import { User } from "./data/types";
@@ -22,10 +24,21 @@ promisifyAll(RedisClient.prototype);
 
 const app: Express = express();
 const auth: Router = Router();
+const http = new httpIn.Server(app);
+const io = socketIO(http);
 
 app.use(cors({ maxAge: 600 }));
 app.use(json());
 app.use(urlencoded({ extended: false }));
+
+io.on("connection", (socket) => {
+  // connection
+  console.log("socket connected");
+  socket.on("disconnect",() => {
+    console.log("socket disconnected");
+    // dc
+  })
+});
 
 app.get("/", function ( _: Request, res: Response ): void {
   res.status(200).json({ status: "UP" });
@@ -84,14 +97,14 @@ auth.use(function ( req: Request, res: Response, next: NextFunction ): void {
     res.status(400).json({ error: [ "Malformed authorization" ] });
     return;
   }
-  const token: string = auth.slice(8);
+  const token: string = auth.slice(7);
   try {
     req.token = <any> jwt.verify(token, JWT_SECRET);
     return next();
   } catch ( err ) {
     res.status(403).json({ errors: [ err.message ] });
   }
-})
+});
 
 auth.get("/entries", asyncHandler(async function (
   req: Request, res: Response
@@ -126,6 +139,7 @@ auth.post("/entries/:date", asyncHandler(async function (
     properties: { content: { type: "string", "required": true } }
   }, { throwError: true, propertyName: "entry" });
   const post: any = await db.addEntry(req.token.id, req.params.date, content);
+  io.emit("newPost",{date: req.params.date});
   res.status(200).json(post);
 }));
 
@@ -148,7 +162,7 @@ app.use(<any> function (
   }
   res.status(err.status || err.statusCode || 500);
   res.json({ errors: [ err.toString() ] });
-})
+});
 
 //Start server
 app.listen(PORT, function ( ): void {
