@@ -53,7 +53,8 @@ export default class Home extends Vue {
   }
 
   public get weeks ( ): number {
-    return Math.floor(new Date().getDate() / 7);
+    return Math.floor((Date.now() - Date.parse(this.$store.auth.data.dob))
+      / 1000 / 60 / 60 / 24 / 7) - 52;
   }
 
   public save ( ): void {
