@@ -15,7 +15,7 @@ const postsPromise: Promise<Collection<Post>> = getPostsCollection();
 export async function addUser(
   name: string, email: string, password: string, dob: Date
 ): Promise<User> {
-  if (await getUserByEmail(email) != null) {
+  if (await getUserByEmail(email) !== null) {
     throw new Error("DB Error User already exists for email");
   }
 
@@ -30,39 +30,31 @@ export async function addUser(
     throw new Error("DB Error adding user");
   }
   // return user info by checking for it in the DB
-  return getUserById(_id);
+  return getUserById(_id) as Promise<User>;
 }
 
-export async function getUserById ( id: string ): Promise<User> {
+export async function getUserById ( id: string ): Promise<User | null> {
   const users: Collection<User> = await usersPromise;
-  const user: User | null = await users.findOne({_id:id});
-  if (user === null) {
-    throw new Error("DB Error User not found");
-  }
-  return user;
+  return users.findOne({ _id: id });
 }
 
-export async function getUserByEmail ( email:string ): Promise<User> {
+export async function getUserByEmail ( email:string ): Promise<User | null> {
   const users: Collection<User> = await usersPromise;
-  const user: User | null = await users.findOne({ email });
-  if (user === null) {
-    throw new Error("DB Error User not found");
-  }
-  return user;
+  return users.findOne({ email });
 }
 
 export async function checkPw ( email: string, password: string ): Promise<boolean> {
-  const user: User = await getUserByEmail(email);
+  const user: User | null = await getUserByEmail(email);
+  if (user === null) {
+    return Promise.resolve(false);
+  }
   return bcrypt.compare(password, user.password);
 }
 
 export async function getAllPostsById ( id: string ): Promise<Array<Post>> {
   const posts: Collection<Post> = await postsPromise;
   const postList: Array<Post> = await posts.find({ user: id }).toArray();
-  if (postList === null) {
-    throw new Error("DB Error No posts found for user");
-  }
-  return postList;
+  return postList || [ ];
 }
 
 export async function getSinglePostByUserDate ( id: string, date: Date ): Promise<Post | null> {
@@ -79,7 +71,7 @@ export async function updatePost( uid: string, date: Date, content: string ): Pr
   const posts: Collection<Post> = await postsPromise;
   const post: UpdateWriteOpResult = await posts.updateOne({
     user: uid, date: date
-  },{
+  }, {
     $set: { content: content }
   });
   if (post === null) {

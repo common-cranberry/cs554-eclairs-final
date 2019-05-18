@@ -15,6 +15,7 @@ import { validate } from "jsonschema";
 import asyncHandler from "express-async-handler";
 
 import * as db from "./data";
+import { User } from "./data/types";
 import { BCRYPT_ROUNDS, JWT_SECRET, PORT } from "./env";
 
 promisifyAll(RedisClient.prototype);
@@ -63,10 +64,10 @@ app.post("/login", asyncHandler(async function (
     }
   }, { throwError: true, propertyName: "login" });
   if (!await db.checkPw(email, password)) {
-    res.status(403).json({ errors: [ "Invalid Login" ] });
+    res.status(403).json({ errors: [ "Invalid credentials" ] });
     return;
   }
-  const user = await db.getUserByEmail(email);
+  const user = await db.getUserByEmail(email) as User;
   const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET);
   res.status(200).json({ user, token });
 }));
