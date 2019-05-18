@@ -17,6 +17,12 @@ export const MONGO_PORT: string =
 export const MONGO_BASE: string =
   process.env.MONGO_BASE || "554fp";
 
+export const MONGO_TOKEN: string | undefined =
+  process.env.MONGO_TOKEN;
+
+export const MONGO_OPTIONS: string =
+  process.env.MONGO_OPTIONS || "?ssl=true";
+
 export const MONGO_COLLECTION_USERS: string =
   process.env.MONGO_COLLECTION_USERS || "users";
 

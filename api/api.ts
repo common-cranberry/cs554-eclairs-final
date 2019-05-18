@@ -23,30 +23,13 @@ const auth: Router = Router();
 
 app.use(cors({ maxAge: 600 }));
 app.use(json());
-app.use(urlencoded());
-
-app.use(function ( req: Request, res: Response, next: NextFunction ): void {
-  const auth: string | undefined = req.headers.authorization;
-  if (!auth) {
-    res.status(400).json({ errors: [ "Missing authorization" ] });
-    return;
-  }
-  if (!/^bearer\s/i.test(auth)) {
-    res.status(400).json({ error: [ "Malformed authorization" ] });
-    return;
-  }
-  const token: string = auth.slice(8);
-  try {
-    req.token = <any> jwt.verify(token, JWT_SECRET);
-    return next();
-  } catch ( err ) {
-    res.status(403).json({ errors: [ err.message ] });
-  }
-}, auth);
+app.use(urlencoded({ extended: false }));
 
 app.get("/", function ( _: Request, res: Response ): void {
   res.status(200).json({ status: "UP" });
 });
+
+app.use("/", auth);
 
 app.post("/register", async function (
   req: Request, res: Response
@@ -88,6 +71,25 @@ app.post("/login", async function (
   const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET);
   res.status(200).json({ user, token });
 });
+
+auth.use(function ( req: Request, res: Response, next: NextFunction ): void {
+  const auth: string | undefined = req.headers.authorization;
+  if (!auth) {
+    res.status(400).json({ errors: [ "Missing authorization" ] });
+    return;
+  }
+  if (!/^bearer\s/i.test(auth)) {
+    res.status(400).json({ error: [ "Malformed authorization" ] });
+    return;
+  }
+  const token: string = auth.slice(8);
+  try {
+    req.token = <any> jwt.verify(token, JWT_SECRET);
+    return next();
+  } catch ( err ) {
+    res.status(403).json({ errors: [ err.message ] });
+  }
+})
 
 auth.get("/entries", async function (
   req: Request, res: Response

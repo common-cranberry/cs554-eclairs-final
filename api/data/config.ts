@@ -1,15 +1,19 @@
 
 import { MongoClient, Db, Collection } from "mongodb";
 
-import { MONGO_HOST, MONGO_PORT, MONGO_BASE,
- MONGO_COLLECTION_USERS,
- MONGO_COLLECTION_POSTS } from "../env";
+import {
+  MONGO_HOST, MONGO_PORT, MONGO_BASE,
+  MONGO_TOKEN, MONGO_OPTIONS,
+  MONGO_COLLECTION_USERS,
+  MONGO_COLLECTION_POSTS } from "../env";
 
 import { User, Post } from "./types";
 
 async function getClient ( ): Promise<MongoClient> {
   return MongoClient.connect(
-    `mongodb://${MONGO_HOST}:${MONGO_PORT}`,
+    `mongodb://${
+      MONGO_TOKEN ? MONGO_TOKEN + "@" : ""
+    }${MONGO_HOST}:${MONGO_PORT}${MONGO_OPTIONS}`,
     { useNewUrlParser: true });
 }
 
