@@ -11,17 +11,17 @@ v-layout#auth(fill-height, align-center, justify-center)
     v-card-text
       v-form(ref="auth", v-model="authValid", lazy-validation)
         v-text-field(key="email", :rules="[required]",
-          label="Email", :value="$store.auth.data.email", autofocus)
+          label="Email", v-model="$store.auth.data.email", autofocus)
         v-text-field(key="name", v-if="$store.auth.register", 
           :rules="[requiredForRegister]",
-          label="Name", :value="$store.auth.data.name")
+          label="Name", v-model="$store.auth.data.name")
         v-text-field(key="password", :rules="[required]",
-          label="Password", type="password", :value="$store.auth.data.password")
+          label="Password", type="password", v-model="$store.auth.data.password")
         v-text-field(key="passmatch", v-if="$store.auth.register",
           :rules="[requiredForRegister]",
-          label="Verify Password", type="password", :value="$store.auth.data.passmatch")
+          label="Verify Password", type="password", v-model="$store.auth.data.passmatch")
         v-checkbox(key="trusted", color="primary",
-          label="Trusted Device", :value="$store.auth.data.trusted")
+          label="Trusted Device", v-model="$store.auth.data.trusted")
     v-card-actions.justify-end
       v-btn(color="primary", flat, @click="$store.auth.register = !$store.auth.register")
         span(v-if="$store.auth.register") Login
