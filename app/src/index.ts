@@ -10,7 +10,7 @@ import "./data/store";
 import io from 'socket.io-client';
 
 // @ts-ignore
-const socket = io('http://localhost',{origins: "*:*"});
+const socket = io('http://localhost:5000');
 socket.on('newPost',function (msg:any) {
   let date = msg.date;
   console.log("A user just made a post for" + date);

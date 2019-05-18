@@ -29,7 +29,7 @@ const auth: Router = Router();
 app.use(cors({ maxAge: 600 }));
 app.use(json());
 app.use(urlencoded({ extended: false }));
-const io = socketIO.listen(app.listen(PORT));
+const io = socketIO.listen(app.listen(5000));
 
 io.on("connection", (socket) => {
   // connection
@@ -140,6 +140,7 @@ auth.post("/entries/:date", asyncHandler(async function (
   }, { throwError: true, propertyName: "entry" });
   const post: any = await db.addEntry(req.token.id, req.params.date, content);
   io.emit("newPost",{date: req.params.date});
+  console.log("emitted");
   res.status(200).json(post);
 }));
 
