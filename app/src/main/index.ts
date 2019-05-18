@@ -17,6 +17,10 @@ export default class Main extends Vue {
     return ( v ): true | string => !this.$store.auth.register || !!v || "required";
   }
 
+  public get passmatch ( ): ( v: string ) => true | string {
+    return ( v ): true | string => v === this.$store.auth.data.password || "passwords must match";
+  }
+
   public async submit ( ): Promise<any> {
     if ((this.$refs.auth as any).validate()) {
       return this.$store.authorize();

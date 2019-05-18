@@ -18,7 +18,7 @@ v-layout#auth(fill-height, align-center, justify-center)
         v-text-field(key="password", :rules="[required]",
           label="Password", type="password", v-model="$store.auth.data.password")
         v-text-field(key="passmatch", v-if="$store.auth.register",
-          :rules="[requiredForRegister]",
+          :rules="[requiredForRegister, passmatch]",
           label="Verify Password", type="password", v-model="$store.auth.data.passmatch")
         v-checkbox(key="trusted", color="primary",
           label="Trusted Device", v-model="$store.auth.data.trusted")
