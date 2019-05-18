@@ -1,31 +1,39 @@
 
 v-layout#auth(fill-height, align-center, justify-center)
-  v-card
-    v-card-title.primary.py-4
-      .display-1.white--text(v-if="$store.auth.register") Create an Account
-      .display-1.white--text(v-else) Welcome back!
-    v-card-title.error.py-3(v-if="$store.auth.error")
-      .headline.white--text {{$store.auth.error}}
-    v-progress-linear.ma-0(indeterminate, v-if="$store.auth.pending")
-      
-    v-card-text
-      v-form(ref="auth", v-model="authValid", lazy-validation)
-        v-text-field(key="email", :rules="[required]",
-          label="Email", v-model="$store.auth.data.email", autofocus)
-        v-text-field(key="name", v-if="$store.auth.register", 
-          :rules="[requiredForRegister]",
-          label="Name", v-model="$store.auth.data.name")
-        v-text-field(key="password", :rules="[required]",
-          @keydown.enter="submit",
-          label="Password", type="password", v-model="$store.auth.data.password")
-        v-text-field(key="passmatch", v-if="$store.auth.register",
-          :rules="[requiredForRegister, passmatch]",
-          label="Verify Password", type="password", v-model="$store.auth.data.passmatch")
-        v-checkbox(key="trusted", color="primary",
+  v-form(ref="auth", v-model="authValid", lazy-validation)
+    v-card
+      v-card-title.error.py-3(v-if="$store.auth.error")
+        .headline.white--text {{$store.auth.error}}
+      v-progress-linear.ma-0(indeterminate, v-if="$store.auth.pending")
+      v-card-text.pa-0
+        v-layout(nowrap, :column="$vuetify.breakpoint.xsOnly")
+          v-flex
+            v-layout.primary.px-4(column, style="height:88px", justify-center)
+              .display-1.white--text(v-if="$store.auth.register") Create an Account
+              .display-1.white--text(v-else) Welcome back!
+              .headline.white--text.pt-2.text-xs-right(v-if="$store.auth.register") Birthday:
+            .fields.px-4.pt-3
+              v-text-field(key="email", :rules="[required]",
+                label="Email", v-model="$store.auth.data.email", autofocus)
+              v-text-field(key="name", v-if="$store.auth.register", 
+                :rules="[requiredForRegister]",
+                label="Name", v-model="$store.auth.data.name")
+              v-text-field(key="password", :rules="[required]",
+                @keydown.enter="submit",
+                label="Password", type="password", v-model="$store.auth.data.password")
+              v-text-field(key="passmatch", v-if="$store.auth.register",
+                :rules="[requiredForRegister, passmatch]",
+                label="Verify Password", type="password", v-model="$store.auth.data.passmatch")
+          v-flex(v-if="$store.auth.register")
+            v-date-picker.elevation-0(v-model="$store.auth.data.dob",
+              color="primary", :max="new Date().toISOString()")
+      v-card-actions.justify-end.px-4
+        v-checkbox.mr-3(key="trusted", color="primary",
           label="Trusted Device", v-model="$store.auth.data.trusted")
-    v-card-actions.justify-end
-      v-btn(color="primary", flat, @click="$store.auth.register = !$store.auth.register")
-        span(v-if="$store.auth.register") Login
-        span(v-else) Register
-      v-btn(color="primary", depressed, @click="submit") Submit
-  
+        v-btn(color="primary", flat, @click="$store.auth.register = !$store.auth.register")
+          span(v-if="$store.auth.register") Login
+          span(v-else) Register
+        v-btn(color="primary", depressed, @click="submit") 
+          span(v-if="$store.auth.register") Register
+          span(v-else) Login
+    
