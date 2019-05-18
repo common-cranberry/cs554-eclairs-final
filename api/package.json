@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "start": "node dist/api"
+    "start": "node dist/api",
+    "debug": "pnpm run build && pnpm run start"
   },
   "dependencies": {
     "bcrypt": "^3.0.6",
