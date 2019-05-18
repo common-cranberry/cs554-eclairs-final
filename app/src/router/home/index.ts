@@ -9,6 +9,7 @@ import "./index.styl";
 export default class Home extends Vue {
 
   public grid: Array<Array<any>> = null as any;
+  public loading: boolean = true;
 
   public active: boolean = false;
   public activeData: null | [ number, number ] = null;
@@ -38,6 +39,7 @@ export default class Home extends Vue {
         const m = entry.date.match(/(\d+)-(\d+)/);
         Object.assign(this.grid[Number(m[1])][Number(m[2])], entry);
       }
+      this.loading = false;
     });
   }
 

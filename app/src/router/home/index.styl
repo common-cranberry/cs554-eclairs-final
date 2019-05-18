@@ -1,7 +1,12 @@
 
 
 .week
-  padding 2px
+  padding 1px
   cursor pointer
+  transform scale(1)
   &:hover
+    & > *
+      background-color mix(white, #0082E6, 86%) !important
+    transition 300ms
+    z-index 2
     transform scale(2)

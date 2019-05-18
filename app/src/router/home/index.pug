@@ -3,8 +3,9 @@ v-layout#home__page(fill-height, align-center, justify-center)
   v-card
     v-card-title.primary.white--text
       .display-1 Weeks in the life of {{$store.auth.data.name}}.
-    v-card-text
-      v-layout(column, nowrap)
+    v-card-text.pa-0
+      v-progress-linear(indeterminate, v-if="loading")
+      v-layout.pa-2(column, nowrap)
         v-flex(shrink)
           v-layout(row, nowrap)
             v-flex(v-for="j, week in new Array(52)")
@@ -13,7 +14,7 @@ v-layout#home__page(fill-height, align-center, justify-center)
           v-layout(row, nowrap)
             v-flex(v-for="week, weekN in year")
               .week(@click="activeData = [ yearN, weekN ]; content = activeItem.content; active=true")
-                .d-block.pa-1(:class="grid[yearN][weekN].content !== null ? 'primary' : 'grey'")
+                .d-block.pl-1.pr-2.pt-1.pb-2(:class="grid[yearN][weekN].content !== null ? 'primary' : 'grey'")
       v-dialog(lazy, v-model="active")
         v-card(v-if="activeData")
           v-card-title.primary.white--text
